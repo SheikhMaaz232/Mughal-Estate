@@ -5,9 +5,16 @@ namespace App\Services;
 use App\Models\Company;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
+use App\Services\CommonService;
 
 class CompanyService
 {
+    protected $commonService;
+
+    public function __construct(CommonService $commonService) {
+        $this->commonService = $commonService;
+    }
+
     public function paginateCompanies(int $perPage = 10, array $filters = []): LengthAwarePaginator
     {
         return Company::query()
@@ -23,15 +30,28 @@ class CompanyService
             ]);
     }
 
-    public function createCompany(array $validatedData): Company
+    public function create(array $data, $image = null): Company
     {
-        return Company::create($validatedData);
+        if ($image) {
+            $data['logo'] = $this->commonService->uploadImage($image, 'company_images');
+        }
+
+        return Company::create($data);
     }
 
-    public function updateCompany(Company $company, array $validatedData): Company
+    public function update(Company $company, array $validatedData, array $data, $image = null): Company
     {
 
-        $company->update($validatedData);
+        if ($image) {
+            // Optional: delete old image
+            if ($company->image && Storage::exists($company->image)) {
+                Storage::delete($company->image);
+            }
+
+            $data['logo'] = $this->commonService->uploadImage($image, 'company_images');
+        }
+
+        $company->update($data);
         return $company;
     }
 

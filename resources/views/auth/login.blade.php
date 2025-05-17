@@ -13,7 +13,7 @@
 <div id="page-container">
     <main id="main-container">
         @php
-        $photoUrl = asset('/public/media/photos/photo28@2x.jpg');
+        $photoUrl = asset('/media/photos/photo28@2x.jpg');
     @endphp
 
     <div class="bg-image" style="background-image: url('{{ $photoUrl }}');">            <div class="row g-0 bg-primary-dark-op">
@@ -55,7 +55,7 @@
               <div class="w-100">
                 {{-- Header --}}
                 <div class="text-center mb-5">
-                    <img src="{{ asset('public/media/photos/icon-villas-logo.png') }}" alt="Villas Logo" style="height: 50px;">
+                    <img src="{{ asset('media/photos/icon-villas-logo.png') }}" alt="Villas Logo" style="height: 50px;">
 
                   {{--  <p class="mb-3"><i class="fa fa-2x fa-circle-notch text-primary-light"></i></p>  --}}
                   <h1 class="fw-bold mb-2">Sign In</h1>

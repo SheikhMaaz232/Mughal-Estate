@@ -12,24 +12,25 @@ class Company extends Model implements Auditable
     use HasFactory, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'name_eng',
+        'group_id',
+        'name_en',
         'name_ur',
-        'email',
-        'phone',
-        'website',
-        'address',
+        'address_en',
+        'address_ur',
+        'description_en',
+        'description_ur',
         'logo',
-        'description'
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
     ];
 
     public function getAuditData()
     {
         return [
-            'extra_field' => 'value', // You can add extra custom fields here
+            'extra_field' => 'value',
         ];
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 }

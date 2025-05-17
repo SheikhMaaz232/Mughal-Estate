@@ -15,23 +15,27 @@ class StoreCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_eng' => 'required|string|max:255',
+            'group_id' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
             'name_ur' => 'required|string|max:255',
-            'email' => 'email|unique:companies,email',
-            'phone' => 'nullable|string|max:20',
-            'website' => 'nullable|url|max:255',
-            'address' => 'nullable|string',
+            'address_en' => 'required|string',
+            'address_ur' => 'required|string',
+            'description_en' => 'required|string',
+            'description_ur' => 'required|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'nullable|string',
         ];
     }
 
     public function messages()
     {
         return [
-            'name_eng.required' => 'The company english name is required',
+            'group_id.required' => 'The group id is required',
+            'name_en.required' => 'The company english name is required',
             'name_ur.required' => 'The company urdu name is required',
-            'email.unique' => 'This email is already registered',
+            'address_en.required' => 'The address in english is required',
+            'address_ur.required' => 'The address in urdu is required',
+            'description_en.required' => 'The description in english is required',
+            'description_ur.required' => 'The description in urdu is required',
             'logo.image' => 'The logo must be an image file',
             'logo.max' => 'The logo size should not exceed 2MB',
         ];

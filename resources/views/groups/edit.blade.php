@@ -6,9 +6,9 @@
         <h3 class="block-title">Edit Group</h3>
     </div>
     <div class="block-content block-content-full">
-    <form action="{{ route('groups.update', $group) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+        <form action="{{ route('groups.update', $group) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
         @include('groups.partials.form', ['group' => $group])
     </form>
 </div>

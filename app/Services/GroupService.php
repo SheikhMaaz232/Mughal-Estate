@@ -2,21 +2,27 @@
 namespace App\Services;
 
 use App\Models\Group;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use App\Services\CommonService;
 
 class GroupService
 {
-    public function create(array $data, ?UploadedFile $image = null): Group
+    protected $commonService;
+
+    public function __construct(CommonService $commonService) {
+        $this->commonService = $commonService;
+    }
+
+    public function create(array $data, $image = null): Group
     {
         if ($image) {
-            $data['image'] = $this->uploadImage($image);
+            $data['image'] = $this->commonService->uploadImage($image, 'group_images');
         }
 
         return Group::create($data);
     }
 
-    public function update(Group $group, array $data, ?UploadedFile $image = null): Group
+    public function update(Group $group, array $data, $image = null): Group
     {
         if ($image) {
             // Optional: delete old image
@@ -24,16 +30,11 @@ class GroupService
                 Storage::delete($group->image);
             }
 
-            $data['image'] = $this->uploadImage($image);
+            $data['image'] = $this->commonService->uploadImage($image, 'group_images');
         }
 
         $group->update($data);
         return $group;
-    }
-
-    protected function uploadImage(UploadedFile $image): string
-    {
-        return $image->store('group_images', 'public');
     }
 
     public function delete(Group $group)

@@ -16,29 +16,66 @@
 
 </div>
 <div class="content">
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Logo</th>
                 <th>Group Code</th>
                 <th>Name (EN)</th>
                 <th>Name (UR)</th>
-                <th>Actions</th>
+                <th width="150">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($groups as $group)
                 <tr>
+                     <td>
+                        @if ($group->image)
+                            <img src="{{ asset('storage/' . $group->image) }}" alt="Logo" width="50" height="50" style="object-fit: cover;">
+                        @else
+                            <span class="text-muted">No Logo</span>
+                        @endif
+                    </td>
                     <td>{{ $group->group_code }}</td>
                     <td>{{ $group->name_eng }}</td>
                     <td>{{ $group->name_ur }}</td>
-                    <td>
-                        <a href="{{ route('groups.show', $group) }}" class="btn btn-sm btn-info">View</a>
-                        <a href="{{ route('groups.edit', $group) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('groups.destroy', $group) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <!-- Edit Button -->
+                            <a href="{{ route('groups.edit', $group->id) }}"
+                               class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
+                               data-bs-toggle="tooltip"
+                               aria-label="Edit Group"
+                               data-bs-original-title="Edit Group">
+                                <i class="fa fa-fw fa-pencil-alt"></i>
+                            </a>
+
+                            <!-- Delete Form -->
+                            <form method="POST" action="{{ route('groups.destroy', $group->id) }}" class="d-inline-block delete-form">
+                                @csrf
+                                @method('DELETE')
+                                {{--  <button type="button" class="fa fa-fw fa-pencil-alt" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                    Del
+                                </button>  --}}
+                                <button type="button" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled btn-delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+
+                            </form>
+
+                        </div>
                     </td>
                 </tr>
             @endforeach

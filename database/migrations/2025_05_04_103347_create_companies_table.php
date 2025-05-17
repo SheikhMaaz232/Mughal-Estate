@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+            $table->integer('group_id');
             $table->string('name_eng');
             $table->string('name_ur');
+            $table->text('description_en');
+            $table->text('description_ur');
+            $table->string('address_en');
+            $table->string('address_ur');
+            $table->string(column: 'logo')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
